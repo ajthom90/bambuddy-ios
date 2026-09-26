@@ -9,19 +9,21 @@ actor ImageLoader {
 
     init() { cache.countLimit = 300 }
 
-    func image(for url: URL, client: APIClient, reload: Bool = false) async -> UIImage? {
-        if !reload, let hit = cache.object(forKey: url as NSURL) { return hit }
-        if let task = inflight[url] { return await task.value }
+    /// `cacheKey` should be the URL without volatile query items (e.g. the media token).
+    func image(for url: URL, cacheKey: URL? = nil, client: APIClient, reload: Bool = false) async -> UIImage? {
+        let key = cacheKey ?? url
+        if !reload, let hit = cache.object(forKey: key as NSURL) { return hit }
+        if let task = inflight[key] { return await task.value }
         let task = Task<UIImage?, Never> {
             var req = client.makeRequest(.get, url.absoluteString)
             req.setValue("image/*,*/*", forHTTPHeaderField: "Accept")
             guard let data = try? await client.rawData(req) else { return nil }
             return await Task.detached(priority: .utility) { UIImage(data: data)?.preparingForDisplay() ?? UIImage(data: data) }.value
         }
-        inflight[url] = task
+        inflight[key] = task
         let image = await task.value
-        inflight[url] = nil
-        if let image { cache.setObject(image, forKey: url as NSURL) }
+        inflight[key] = nil
+        if let image { cache.setObject(image, forKey: key as NSURL) }
         return image
     }
 
@@ -50,8 +52,14 @@ struct RemoteImage<Placeholder: View>: View {
         }
         .task(id: TaskKey(path: path, reload: reloadKey)) {
             guard let path, !path.isEmpty else { image = nil; return }
-            let url = session.client.url(path)
-            let loaded = await ImageLoader.shared.image(for: url, client: session.client, reload: reloadKey != nil && image != nil)
+            let key = session.client.url(path)
+            let reload = reloadKey != nil && image != nil
+            var loaded = await ImageLoader.shared.image(for: await session.mediaURL(path), cacheKey: key, client: session.client, reload: reload)
+            if loaded == nil, session.isAuthEnabled {
+                // The media token may have expired server-side; mint a fresh one once.
+                session.invalidateStreamToken()
+                loaded = await ImageLoader.shared.image(for: await session.mediaURL(path), cacheKey: key, client: session.client, reload: true)
+            }
             if let loaded { image = loaded } else if image == nil { failed = true }
         }
     }

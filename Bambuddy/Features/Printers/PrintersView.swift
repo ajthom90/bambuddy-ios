@@ -57,6 +57,13 @@ struct PrintersView: View {
             .sheet(isPresented: $showAdd) {
                 PrinterEditView(printer: nil) { Task { await store.refresh() } }
             }
+            #if DEBUG
+            .onAppear {
+                // Launch argument `-openPrinter <id>` opens a printer's detail screen (for screenshots).
+                let id = UserDefaults.standard.integer(forKey: "openPrinter")
+                if id > 0, path.isEmpty { path.append(id) }
+            }
+            #endif
         }
     }
 }

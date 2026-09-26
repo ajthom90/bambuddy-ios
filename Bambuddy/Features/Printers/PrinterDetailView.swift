@@ -22,32 +22,33 @@ struct PrinterDetailView: View {
     var body: some View {
         ScrollView {
             if let printer {
-                let columns = hSize == .regular ? [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)] : [GridItem(.flexible())]
-                VStack(spacing: 16) {
-                    if session.can("camera:view"), showCamera {
-                        PrinterCameraView(printerId: printerId, rotation: printer.cameraRotation ?? 0)
-                            .aspectRatio(16 / 9, contentMode: .fit)
-                            .clipShape(.rect(cornerRadius: 16))
-                            .overlay(alignment: .topTrailing) {
-                                Button { fullscreenCamera = true } label: {
-                                    Image(systemName: "arrow.up.left.and.arrow.down.right").padding(8)
-                                }
-                                .buttonStyle(.glass)
-                                .padding(8)
-                            }
-                    }
-                    LazyVGrid(columns: columns, alignment: .leading, spacing: 16) {
-                        jobCard(printer)
-                        TemperaturesCard(printerId: printerId, status: status, runner: runner)
-                        if let status, !(status.hmsErrors ?? []).isEmpty {
-                            hmsCard(status)
+                if hSize == .regular {
+                    HStack(alignment: .top, spacing: 16) {
+                        VStack(spacing: 16) {
+                            camera(printer)
+                            jobCard(printer)
+                            AMSCard(printerId: printerId, status: status, runner: runner)
+                            infoCard(printer)
                         }
+                        VStack(spacing: 16) {
+                            if let status, !(status.hmsErrors ?? []).isEmpty { hmsCard(status) }
+                            TemperaturesCard(printerId: printerId, status: status, runner: runner)
+                            ControlsCard(printerId: printerId, status: status, runner: runner)
+                        }
+                    }
+                    .padding()
+                } else {
+                    VStack(spacing: 16) {
+                        camera(printer)
+                        jobCard(printer)
+                        if let status, !(status.hmsErrors ?? []).isEmpty { hmsCard(status) }
+                        TemperaturesCard(printerId: printerId, status: status, runner: runner)
                         AMSCard(printerId: printerId, status: status, runner: runner)
                         ControlsCard(printerId: printerId, status: status, runner: runner)
                         infoCard(printer)
                     }
+                    .padding()
                 }
-                .padding()
             } else {
                 ContentUnavailableView("Printer Not Found", systemImage: "printer")
             }
@@ -118,6 +119,22 @@ struct PrinterDetailView: View {
     }
 
     @ViewBuilder
+    private func camera(_ printer: Printer) -> some View {
+        if session.can("camera:view"), showCamera {
+            PrinterCameraView(printerId: printerId, rotation: printer.cameraRotation ?? 0)
+                .aspectRatio(16 / 9, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 16))
+                .overlay(alignment: .topTrailing) {
+                    Button { fullscreenCamera = true } label: {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right").padding(8)
+                    }
+                    .buttonStyle(.glass)
+                    .padding(8)
+                }
+        }
+    }
+
+    @ViewBuilder
     private func jobCard(_ printer: Printer) -> some View {
         DetailCard(title: "Current Job", systemImage: "cube") {
             if let status, status.isActiveJob {
@@ -127,7 +144,7 @@ struct PrinterDetailView: View {
                         .clipShape(.rect(cornerRadius: 10))
                     VStack(alignment: .leading, spacing: 6) {
                         Text(status.jobName ?? "Printing").font(.headline).lineLimit(3)
-                        HStack { PrinterStateBadge(status: status); if let stage = status.stgCurName, !stage.isEmpty { Text(stage).font(.caption).foregroundStyle(.secondary) } }
+                        HStack { PrinterStateBadge(status: status); if let stage = status.stgCurName, !stage.isEmpty, stage.caseInsensitiveCompare(status.stateLabel) != .orderedSame { Text(stage).font(.caption).foregroundStyle(.secondary) } }
                     }
                 }
                 ProgressView(value: (status.progress ?? 0) / 100).tint(status.isPaused ? .orange : .accentColor)

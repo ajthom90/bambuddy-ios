@@ -133,7 +133,7 @@ struct AMSCard: View {
                 if let remain = tray.remain, remain >= 0, !tray.isEmpty {
                     ProgressView(value: Double(remain) / 100).frame(width: 40).tint(remain < 15 ? .red : .accentColor)
                 } else {
-                    Text(tray.displayName == tray.trayType ? " " : tray.displayName).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+                    Text(tray.isEmpty || tray.displayName == tray.trayType ? " " : tray.displayName).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
                 }
             }
             .frame(maxWidth: .infinity)

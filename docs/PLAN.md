@@ -5,7 +5,7 @@ Status: ✅ done · 🚧 in progress · ⏳ planned · ➖ not applicable on iOS
 
 | Web page / feature | Native screen | Status |
 |---|---|---|
-| Server connection, `/setup`, `/login` (local, 2FA, OIDC, forgot password) | Onboarding | ✅ |
+| Server connection, `/setup`, `/login` (local, 2FA, OIDC, forgot password) | Onboarding | ✅ connection verified; auth flows implemented but untested (test server has auth disabled) |
 | **Printers** `/` — cards, live status, progress, temps, AMS, HMS | Printers | ✅ |
 | Printer controls — pause/resume/stop, speed, fans, light, jog/home, airduct, extruder, AI options | Printer detail | ✅ |
 | AMS — load/unload, RFID refresh, reset slot, drying, backup | Printer detail | ✅ |

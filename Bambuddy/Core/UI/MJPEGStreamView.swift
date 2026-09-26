@@ -63,8 +63,11 @@ final class MJPEGStream: NSObject, URLSessionDataDelegate, @unchecked Sendable {
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let error, (error as NSError).code != NSURLErrorCancelled {
-            onError(error.localizedDescription)
+        if let error {
+            if (error as NSError).code != NSURLErrorCancelled { onError(error.localizedDescription) }
+        } else {
+            // The server closed the stream cleanly; fall back to snapshots instead of freezing.
+            onError("Camera stream ended")
         }
     }
 }

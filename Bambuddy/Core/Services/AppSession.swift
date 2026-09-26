@@ -134,6 +134,39 @@ final class AppSession {
         }
     }
 
+    // MARK: Media URLs
+
+    @ObservationIgnored private var streamToken: (token: String, minted: Date)?
+    @ObservationIgnored private var streamTokenTask: Task<String?, Never>?
+
+    /// URL for media loaded outside the JSON API (thumbnails, covers, timelapses,
+    /// camera). With auth enabled these routes accept only a `?token=` stream
+    /// token (minted by `POST printers/camera/stream-token`, valid 60 min), not
+    /// the bearer header, so the token is appended here.
+    func mediaURL(_ path: String, query: [String: QueryValue?] = [:]) async -> URL {
+        var query = query
+        if isAuthEnabled, let token = await currentStreamToken() {
+            query["token"] = .string(token)
+        }
+        return client.url(path, query: query)
+    }
+
+    func invalidateStreamToken() { streamToken = nil }
+
+    private func currentStreamToken() async -> String? {
+        if let streamToken, Date().timeIntervalSince(streamToken.minted) < 50 * 60 { return streamToken.token }
+        if let streamTokenTask { return await streamTokenTask.value }
+        let client = client
+        let task = Task<String?, Never> {
+            try? await client.send(.post, "printers/camera/stream-token", as: TokenResponse.self).token
+        }
+        streamTokenTask = task
+        let token = await task.value
+        streamTokenTask = nil
+        if let token { streamToken = (token, Date()) }
+        return token
+    }
+
     // MARK: Auth
 
     func completeLogin(token: String, user: User?) async {
@@ -159,6 +192,7 @@ final class AppSession {
 
     private func setToken(_ token: String?) {
         guard let serverURL else { return }
+        streamToken = nil
         Keychain.set(token, for: serverURL.absoluteString)
         client = client.withToken(token)
     }

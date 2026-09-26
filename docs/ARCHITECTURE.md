@@ -28,7 +28,10 @@ Bambuddy/
   kept verbatim, i.e. snake_case).
 - **Loading/errors**: `@State private var loader = Loader<[T]>()` + `LoadingContent`;
   mutations via `@State private var runner = ActionRunner()` + `.actionAlerts(runner)`.
-- **Images**: `RemoteImage(path: "/api/v1/archives/1/thumbnail")` attaches the bearer token.
+- **Images & media**: with auth enabled, media routes (thumbnails, covers, timelapses,
+  plate previews, camera) accept **only** a `?token=` stream token, not the bearer header.
+  `RemoteImage(path: "archives/1/thumbnail")` handles this. For anything else (AVPlayer,
+  QuickLook, share sheets) build the URL with `await session.mediaURL(path, query:)`.
 - **Live refresh**: `.task(id: live.revision("archive_created", "archive_updated")) { … }`
   reloads when the server pushes matching WebSocket events.
 - **Permissions**: gate actions with `session.can("archives:delete_own")`; with auth
