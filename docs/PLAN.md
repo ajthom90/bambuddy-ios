@@ -11,27 +11,27 @@ Status: ✅ done · 🚧 in progress · ⏳ planned · ➖ not applicable on iOS
 | AMS — load/unload, RFID refresh, reset slot, drying, backup | Printer detail | ✅ |
 | Add / edit / delete printer, test connection, discovery (SSDP & subnet scan) | Printer edit | ✅ |
 | Camera (MJPEG + snapshot fallback), full-screen, `/camwall` | Camera | ✅ |
-| AMS slot configuration (filament preset, K-profile) | Printer → slot | ⏳ |
-| Printer file manager (SD card browse / download / delete / print) | Printer → Files | ⏳ |
-| Skip objects, K-profiles, plate detection, smart plug, AMS history, sensor history, diagnostics | Printer → More | ⏳ |
-| **Archives** `/archives` — list, search, filters, detail, reprint, timelapse, photos, notes, tags, compare | Archives | ⏳ |
-| **Queue** `/queue` — queue list, reorder, add, edit, start, pipelines & runs | Queue | ⏳ |
-| **Projects** `/projects`, `/projects/:id` | Projects | ⏳ |
-| **Inventory** `/inventory` — spools, filaments, assignments, forecasts, Spoolman | Inventory | ⏳ |
-| **Files** `/files`, `/files/trash` — library, folders, upload, print, trash | Files | ⏳ |
-| **MakerWorld** `/makerworld` — resolve URL, import | MakerWorld | ⏳ |
-| **Profiles** `/profiles` — cloud, local, Orca cloud, K-profiles | Profiles | ⏳ |
-| **Maintenance** `/maintenance` | Maintenance | ⏳ |
-| **Statistics** `/stats` | Statistics (Swift Charts) | ⏳ |
-| **Finance** `/finance` | Finance | ⏳ |
-| **Notifications** `/notifications` — per-user email preferences | Notifications | ⏳ |
-| **System** `/system` — system info, logs, support bundle | System | ⏳ |
-| **Settings** `/settings` — general, notifications providers & templates, smart plugs, virtual printers, backups (local/GitHub), API keys, camera tokens, users & groups, external links, Home Assistant, Spoolman, Obico, cloud accounts, updates | Settings | ⏳ |
-| **SpoolBuddy** `/spoolbuddy/*` — kiosk dashboard, AMS, write tag, inventory, calibration | SpoolBuddy | ⏳ |
-| External links `/external/:id` | Opens in Safari | ⏳ |
-| G-code viewer `/gcode-viewer` (three.js 3D preview) | — | ⏳ (needs SceneKit port; may defer) |
-| Stream overlay `/overlay/:id` (OBS browser source) | — | ➖ |
-| Keyboard shortcuts modal | iPad hardware-keyboard shortcuts | ⏳ |
+| AMS slot configuration (filament preset, K-profile) | Printer → slot | 🚧 |
+| Printer file manager (SD card browse / download / delete / print) | Printer → Files | 🚧 |
+| Skip objects, K-profiles, plate detection, smart plug, AMS history, sensor history, diagnostics | Printer → More | 🚧 |
+| **Archives** `/archives` — list, search, filters, detail, reprint, timelapse, photos, notes, tags, compare | Archives | 🚧 |
+| **Queue** `/queue` — queue list, reorder, add, edit, start, pipelines & runs | Queue | 🚧 |
+| **Projects** `/projects`, `/projects/:id` | Projects | 🚧 |
+| **Inventory** `/inventory` — spools, filaments, assignments, forecasts, Spoolman | Inventory | 🚧 |
+| **Files** `/files`, `/files/trash` — library, folders, upload, print, trash | Files | 🚧 |
+| **MakerWorld** `/makerworld` — resolve URL, import | MakerWorld | 🚧 |
+| **Profiles** `/profiles` — cloud, local, Orca cloud, K-profiles | Profiles | 🚧 |
+| **Maintenance** `/maintenance` | Maintenance | 🚧 |
+| **Statistics** `/stats` | Statistics (Swift Charts) | 🚧 |
+| **Finance** `/finance` | Finance | 🚧 |
+| **Notifications** `/notifications` — per-user email preferences | Notifications | 🚧 |
+| **System** `/system` — system info, logs, support bundle | System | 🚧 |
+| **Settings** `/settings` — general, notifications providers & templates, smart plugs, virtual printers, backups (local/GitHub), API keys, camera tokens, users & groups, external links, Home Assistant, Spoolman, Obico, cloud accounts, updates | Settings | 🚧 |
+| **SpoolBuddy** `/spoolbuddy/*` — kiosk dashboard, AMS, write tag, inventory, calibration | SpoolBuddy | 🚧 |
+| External links `/external/:id` | Links section (in-app Safari) | ✅ |
+| G-code viewer `/gcode-viewer` (3D toolpath preview) | G-code viewer (Metal) | 🚧 |
+| Stream overlay `/overlay/:id` (OBS browser source) | — | ➖ skipped (not useful on iOS) |
+| Keyboard shortcuts modal | iPad hardware-keyboard shortcuts (⌘1–9, ⌘,) | ✅ |
 
 ## Testing notes
 
