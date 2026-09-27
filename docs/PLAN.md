@@ -35,5 +35,7 @@ Status: ✅ done · 🚧 in progress · ⏳ planned · ➖ not applicable on iOS
 
 ## Testing notes
 
-Control endpoints (pause/stop/temperatures/jog/AMS load, queue dispatch) are wired to the
-documented API but are **not exercised against a live printer** during development.
+Verified live on a P1S (2026-09-26): chamber light, part fan, bed & nozzle temperature targets,
+home all, XY jog, bed jog, HMS clear, and AMS RFID refresh (server correctly refuses while the
+external spool is loaded). Not exercised live: pause/resume/stop (implemented against the API),
+extruder jog and AMS load/unload (printer had a jammed extruder), and anything that starts a print.
