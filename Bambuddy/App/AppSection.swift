@@ -3,7 +3,7 @@ import SwiftUI
 /// Top-level navigation destinations, mirroring the web UI's sidebar.
 enum AppSection: String, CaseIterable, Identifiable, Hashable {
     case printers, camWall, inventory, archives, queue, projects, files, makerworld,
-         profiles, maintenance, stats, finance, spoolbuddy, notifications, system, settings
+         profiles, maintenance, stats, finance, spoolbuddy, links, notifications, system, settings
 
     var id: String { rawValue }
 
@@ -22,6 +22,7 @@ enum AppSection: String, CaseIterable, Identifiable, Hashable {
         case .stats: "Statistics"
         case .finance: "Finance"
         case .spoolbuddy: "SpoolBuddy"
+        case .links: "Links"
         case .notifications: "Notifications"
         case .system: "System"
         case .settings: "Settings"
@@ -43,6 +44,7 @@ enum AppSection: String, CaseIterable, Identifiable, Hashable {
         case .stats: "chart.bar"
         case .finance: "dollarsign.circle"
         case .spoolbuddy: "sensor.tag.radiowaves.forward"
+        case .links: "link"
         case .notifications: "bell"
         case .system: "info.circle"
         case .settings: "gearshape"
@@ -55,6 +57,7 @@ enum AppSection: String, CaseIterable, Identifiable, Hashable {
         case .finance: "cost_centers:read_own"
         case .makerworld: "makerworld:view"
         case .settings: "settings:read"
+        case .links: "external_links:read"
         default: nil
         }
     }
@@ -75,6 +78,7 @@ enum AppSection: String, CaseIterable, Identifiable, Hashable {
         case .stats: StatsRootView()
         case .finance: FinanceRootView()
         case .spoolbuddy: SpoolBuddyRootView()
+        case .links: ExternalLinksView()
         case .notifications: NotificationsRootView()
         case .system: SystemRootView()
         case .settings: SettingsRootView()

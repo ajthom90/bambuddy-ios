@@ -10,7 +10,7 @@ struct MainView: View {
     private let primary: [AppSection] = [.printers, .queue, .archives, .inventory]
     private let library: [AppSection] = [.files, .projects, .makerworld, .profiles]
     private let manage: [AppSection] = [.camWall, .maintenance, .stats, .finance, .spoolbuddy]
-    private let admin: [AppSection] = [.notifications, .system, .settings]
+    private let admin: [AppSection] = [.links, .notifications, .system, .settings]
 
     var body: some View {
         TabView(selection: $selection) {
@@ -44,6 +44,7 @@ struct MainView: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .tabViewCustomization($customization)
+        .background { SectionShortcuts(sections: visible(primary + library + manage + admin), selection: $selection) }
         .overlay(alignment: .top) { LiveNoticeBanner() }
     }
 
@@ -93,5 +94,26 @@ struct LiveNoticeBanner: View {
         case "queue_item_failed": return "Queue item failed to start"
         default: return e.type.replacingOccurrences(of: "_", with: " ").capitalized
         }
+    }
+}
+
+/// Hardware-keyboard shortcuts: ⌘1…⌘9 jump to the first nine visible sections, ⌘, opens Settings.
+private struct SectionShortcuts: View {
+    let sections: [AppSection]
+    @Binding var selection: AppSection
+
+    var body: some View {
+        ZStack {
+            ForEach(Array(sections.prefix(9).enumerated()), id: \.element) { index, section in
+                Button(section.title) { selection = section }
+                    .keyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: .command)
+            }
+            if sections.contains(.settings) {
+                Button("Settings") { selection = .settings }.keyboardShortcut(",", modifiers: .command)
+            }
+        }
+        .opacity(0)
+        .accessibilityHidden(true)
+        .allowsHitTesting(false)
     }
 }
