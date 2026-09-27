@@ -79,7 +79,7 @@ final class SpoolBuddyStore {
         return "\(name) · \(Self.slotLabel(amsId: ams, trayId: tray))"
     }
 
-    static func slotLabel(amsId: Int, trayId: Int) -> String {
+    nonisolated static func slotLabel(amsId: Int, trayId: Int) -> String {
         switch amsId {
         case 254, 255: return trayId == 0 ? "External" : "External R"
         case 128...135: return "AMS HT \(Character(UnicodeScalar(65 + amsId - 128)!))"
@@ -87,7 +87,7 @@ final class SpoolBuddyStore {
         }
     }
 
-    static func normalize(_ tag: String?) -> String {
+    nonisolated static func normalize(_ tag: String?) -> String {
         (tag ?? "").uppercased().filter { $0.isHexDigit }
     }
 
