@@ -77,7 +77,8 @@ struct SettingsExternalLinksView: View {
                     ForEach(links) { link in
                         row(link)
                     }
-                    .onMove(perform: canUpdate ? move : nil)
+                    .onMove { source, destination in move(from: source, to: destination) }
+                    .moveDisabled(!canUpdate)
                 } footer: {
                     Text("Links appear in this order in the web interface's sidebar. Tap a link to open it.")
                 }
