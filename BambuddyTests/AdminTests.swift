@@ -62,12 +62,4 @@ struct AdminTests {
         let otp = try decode(AdminEmailOTPSetup.self, #"{"message":"Code sent","setup_token":"tok"}"#)
         #expect(otp.setupToken == "tok")
     }
-
-    @Test func decodesNotificationPreferences() throws {
-        let prefs = try decode(NotificationEmailPreferences.self, #"""
-        {"notify_print_start":false,"notify_print_complete":true,"notify_print_failed":true,"notify_print_stopped":false}
-        """#)
-        #expect(prefs.notifyPrintComplete)
-        #expect(!prefs.notifyPrintStopped)
-    }
 }

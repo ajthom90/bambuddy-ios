@@ -34,6 +34,7 @@ struct SpoolBuddyRootView: View {
                 }
             }
             .task { liveState.start(live) }
+            .onDisappear { liveState.stop() }
             .task(id: liveState.deviceRevision) { await store.loadDevices(session) }
             .task(id: liveState.spoolRevision) { await store.loadSpools(session) }
             .task {
