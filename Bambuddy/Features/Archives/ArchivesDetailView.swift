@@ -383,10 +383,11 @@ struct ArchivesDetailView: View {
                 }
             }
             if ArchivesPermissions.canUpdate(session, archive) {
+                let uploading = runner.isRunning && photoItem != nil
                 PhotosPicker(selection: $photoItem, matching: .images) {
                     HStack {
                         Label("Add Photo", systemImage: "camera.badge.ellipsis")
-                        if runner.isRunning && photoItem != nil { Spacer(); ProgressView() }
+                        if uploading { Spacer(); ProgressView() }
                     }
                 }
             }
