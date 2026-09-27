@@ -36,7 +36,7 @@ struct PrinterExtrasDecodingTests {
     }
 
     @Test func platesDecode() throws {
-        let json = #"{"printer_id":1,"path":"/fuel_funnel.stl.gcode.3mf","filename":"fuel_funnel.stl.gcode.3mf","plates":[{"index":1,"name":"fuel_funnel.stl","objects":["fuel_funnel.stl"],"object_count":1,"has_thumbnail":true,"thumbnail_url":"/api/v1/printers/1/files/plate-thumbnail/1?path=/fuel_funnel.stl.gcode.3mf","print_time_seconds":9137,"filament_used_grams":35.38,"filaments":[{"slot_id":1,"type":"PLA","color":"#FFFFFF","used_grams":35.4,"used_meters":11.86}]},{"index":2,"name":null,"objects":[],"object_count":0,"has_thumbnail":false,"thumbnail_url":"/x","print_time_seconds":null,"filament_used_grams":null,"filaments":[]}],"is_multi_plate":true}"#
+        let json = ##"{"printer_id":1,"path":"/fuel_funnel.stl.gcode.3mf","filename":"fuel_funnel.stl.gcode.3mf","plates":[{"index":1,"name":"fuel_funnel.stl","objects":["fuel_funnel.stl"],"object_count":1,"has_thumbnail":true,"thumbnail_url":"/api/v1/printers/1/files/plate-thumbnail/1?path=/fuel_funnel.stl.gcode.3mf","print_time_seconds":9137,"filament_used_grams":35.38,"filaments":[{"slot_id":1,"type":"PLA","color":"#FFFFFF","used_grams":35.4,"used_meters":11.86}]},{"index":2,"name":null,"objects":[],"object_count":0,"has_thumbnail":false,"thumbnail_url":"/x","print_time_seconds":null,"filament_used_grams":null,"filaments":[]}],"is_multi_plate":true}"##
         let plates = try decode(PrinterFilePlates.self, json)
         #expect(plates.plates.count == 2)
         #expect(plates.plates[0].filaments?.first?.usedGrams == 35.4)
@@ -148,7 +148,7 @@ struct PrinterExtrasDecodingTests {
     @Test func slotPresetSourcesDecode() throws {
         let cloud = try decode(PrinterCloudSettings.self, #"{"filament":[{"setting_id":"PFUS62fd75c3c2e199","name":"INLAND PLA Pro @Bambu Lab P1S 0.4 nozzle","type":"filament","version":"2.4.0.10","user_id":null,"updated_time":null,"is_custom":true},{"setting_id":"GFSB00_07","name":"Bambu ABS @BBL A1","type":"filament","version":"02.08.00.06","user_id":null,"updated_time":null,"is_custom":false}],"printer":[],"process":[]}"#)
         #expect(cloud.filament?.count == 2)
-        let local = try decode(PrinterLocalPresets.self, #"{"filament":[{"id":12,"name":"eSUN PLA+ @Bambu Lab X1 Carbon 0.4 nozzle","preset_type":"filament","source":"orcaslicer","filament_type":"PLA","filament_vendor":"eSUN","nozzle_temp_min":null,"nozzle_temp_max":230,"pressure_advance":null,"default_filament_colour":"#FFFFFF","filament_cost":null,"filament_density":null,"compatible_printers":"[\"Bambu Lab X1 Carbon 0.4 nozzle\"]","inherits":null,"version":null,"created_at":"2026-01-01T00:00:00","updated_at":"2026-01-01T00:00:00"}],"printer":[],"process":[]}"#)
+        let local = try decode(PrinterLocalPresets.self, ##"{"filament":[{"id":12,"name":"eSUN PLA+ @Bambu Lab X1 Carbon 0.4 nozzle","preset_type":"filament","source":"orcaslicer","filament_type":"PLA","filament_vendor":"eSUN","nozzle_temp_min":null,"nozzle_temp_max":230,"pressure_advance":null,"default_filament_colour":"#FFFFFF","filament_cost":null,"filament_density":null,"compatible_printers":"[\"Bambu Lab X1 Carbon 0.4 nozzle\"]","inherits":null,"version":null,"created_at":"2026-01-01T00:00:00","updated_at":"2026-01-01T00:00:00"}],"printer":[],"process":[]}"##)
         #expect(local.filament?.first?.compatiblePrinterNames == ["Bambu Lab X1 Carbon 0.4 nozzle"])
         let builtin = try decode([PrinterBuiltinFilament].self, #"[{"filament_id":"GFA00","name":"Bambu PLA Basic"}]"#)
         #expect(builtin.first?.filamentId == "GFA00")
@@ -164,7 +164,7 @@ struct PrinterExtrasDecodingTests {
         #expect(d.caliIdx == 16)
         let empty = try decode(PrinterSpoolDefaults.self, #"{"slicer_filament":null,"slicer_filament_name":null,"cali_idx":null,"k_value":null,"profile_name":null,"extruder":0,"nozzle_diameter":"0.4"}"#)
         #expect(empty.slicerFilament == nil)
-        let colors = try decode([PrinterColorCatalogEntry].self, #"[{"id":631,"manufacturer":"3DXTECH","color_name":"Natural","hex_color":"#DED7C6","material":"ASA","is_default":true,"extra_colors":null,"effect_type":null}]"#)
+        let colors = try decode([PrinterColorCatalogEntry].self, ##"[{"id":631,"manufacturer":"3DXTECH","color_name":"Natural","hex_color":"#DED7C6","material":"ASA","is_default":true,"extra_colors":null,"effect_type":null}]"##)
         #expect(colors.first?.hexColor == "#DED7C6")
     }
 
@@ -251,7 +251,7 @@ struct PrinterExtrasDecodingTests {
     }
 
     @Test func firmwareDecode() throws {
-        let info = try decode(PrinterFirmwareInfo.self, #"{"printer_id":1,"printer_name":"Office Printer","model":"P1S","current_version":"01.09.01.00","latest_version":"01.10.00.00","update_available":true,"download_url":"https://x/y.zip","release_notes":"# Notes","available_versions":[{"version":"01.10.00.00","file_available":true,"download_url":null,"release_notes":null,"release_time":"2026-03-30T09:07:48"}]}"#)
+        let info = try decode(PrinterFirmwareInfo.self, ##"{"printer_id":1,"printer_name":"Office Printer","model":"P1S","current_version":"01.09.01.00","latest_version":"01.10.00.00","update_available":true,"download_url":"https://x/y.zip","release_notes":"# Notes","available_versions":[{"version":"01.10.00.00","file_available":true,"download_url":null,"release_notes":null,"release_time":"2026-03-30T09:07:48"}]}"##)
         #expect(info.updateAvailable)
         #expect(info.availableVersions?.first?.fileAvailable == true)
         let offline = try decode(PrinterFirmwareInfo.self, #"{"printer_id":1,"printer_name":"P","model":"Unknown","current_version":null,"latest_version":null,"update_available":false}"#)

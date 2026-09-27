@@ -308,7 +308,7 @@ struct SkipObjectsView: View {
         GeometryReader { geo in
             let box = geo.size
             ZStack {
-                RemoteImage(path: "printers/\(printerId)/cover", contentMode: .fit, reloadKey: status?.gcodeFile, systemImage: "cube")
+                RemoteImage(path: "printers/\(printerId)/cover?view=top", contentMode: .fit, reloadKey: status?.gcodeFile, systemImage: "cube")
                     .frame(width: box.width, height: box.height)
                 if let overlay {
                     Image(uiImage: overlay)
