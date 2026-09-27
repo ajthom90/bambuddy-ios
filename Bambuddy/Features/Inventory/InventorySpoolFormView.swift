@@ -187,7 +187,10 @@ struct InventorySpoolFormView: View {
                 Button("Cancel", role: .cancel) {}
             }
             .sheet(isPresented: $showAddK) {
-                InventoryKProfilePicker { kProfiles.removeAll { k in k.printerId == $0.printerId && k.extruder == $0.extruder && k.nozzleDiameter == $0.nozzleDiameter }; kProfiles.append($0) }
+                InventoryKProfilePicker { new in
+                    kProfiles.removeAll { $0.printerId == new.printerId && $0.extruder == new.extruder && $0.nozzleDiameter == new.nozzleDiameter }
+                    kProfiles.append(new)
+                }
             }
             .sheet(isPresented: $showAddPreset) {
                 InventoryModelPresetPicker(options: presetOptions) { new in
