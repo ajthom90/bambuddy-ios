@@ -213,7 +213,7 @@ struct QueueTests {
         #expect(reqs.filaments?[0].trayInfoIdx == "GFA00")
         #expect(reqs.filaments?[1].nozzleId == nil)
 
-        let available = try decode([QueueAvailableFilament].self, #"[{"type":"PLA","color":"#FFF144FF","tray_info_idx":"P510aba0","tray_sub_brands":"","extruder_id":0},{"type":"PETG","color":"#000000","tray_info_idx":"","tray_sub_brands":"PETG HF","extruder_id":null}]"#)
+        let available = try decode([QueueAvailableFilament].self, ##"[{"type":"PLA","color":"#FFF144FF","tray_info_idx":"P510aba0","tray_sub_brands":"","extruder_id":0},{"type":"PETG","color":"#000000","tray_info_idx":"","tray_sub_brands":"PETG HF","extruder_id":null}]"##)
         #expect(available.count == 2)
     }
 
